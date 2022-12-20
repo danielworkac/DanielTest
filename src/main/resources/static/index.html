@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>紅包計算網站</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+        <form class="Body">
+        <div><input name="money"> 元 <input name="person"> 人 <button name="Btn" type="button" onclick="update()"> + </button></div>
+        </form>
+        <h4><button type="button" onclick="Count()"> 結算 </button></h4>
+        <div class="Total"></div>
+</body>
+
+<script>
+    var NameNum = 0;
+    function update(){
+        var Button = document.getElementsByName('Btn');
+        Button[NameNum].style.display = 'none';
+        NameNum += 1;
+        $('.Body').append('<div><input name="money"> 元 <input name="person"> 人 <button name="Btn" type="button" onclick="update()"> + </button></div>');
+
+    }
+
+    function Count(){
+        var moneylist = document.getElementsByName('money');
+        var personlist = document.getElementsByName('person');
+        const map = new Map();
+
+        for(var i = 0; i < moneylist.length; i++){
+            var money = moneylist[i].value;
+            var person = personlist[i].value;
+
+            map.set(`${i}`, `${money}/${person}`);
+
+        }
+
+        var data = JSON.stringify(Object.fromEntries(map));
+        // alert(data);
+        $.ajax({
+            url: "/doCount",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: data,
+            success: function (response) {
+                var div = document.querySelector('.Total');
+                div.innerHTML = "<div>" + response.toString() + "</div>";
+            }
+
+        });
+    }
+</script>
+</html>
