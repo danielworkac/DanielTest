@@ -44,8 +44,12 @@
             contentType: 'application/json; charset=utf-8',
             data: data,
             success: function (response) {
+                response = response.replace('ServiceReturnModel','');
+                response = response.replace('oneHundred=', '百元鈔 : ');
+                response = response.replace('fiveHundred=', '五百元鈔 : ');
+                response = response.replace('oneThousand=', '千元鈔 : ');
                 var div = document.querySelector('.Total');
-                div.innerHTML = "<div>" + response.toString() + "</div>";
+                div.innerHTML = "<div>" + response + "</div>";
             }
 
         });
