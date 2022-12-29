@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.model.CountRecordModel;
 import com.example.demo.model.ServiceModel;
 import com.example.demo.model.ServiceReturnModel;
 import com.example.demo.service.CountService;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CountController {
 
     final CountService countService;
+    final JPAController jpaController;
 
     @Autowired
-    public CountController(CountService countService) {
+    public CountController(CountService countService, JPAController jpaController) {
         this.countService = countService;
+        this.jpaController = jpaController;
     }
 
     @RequestMapping({"/doCount"})
@@ -31,6 +34,7 @@ public class CountController {
             result.add(countService.doCount(serviceModel));
         }
 
+        jpaController.addRecord(new CountRecordModel(result.getOneThousand(), result.getFiveHundred(), result.getOneThousand()));
         return result.toString();
 
     }
