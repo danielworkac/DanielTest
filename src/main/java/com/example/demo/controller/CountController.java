@@ -5,8 +5,10 @@ import com.example.demo.model.CountRecordModel;
 import com.example.demo.model.ServiceModel;
 import com.example.demo.model.ServiceReturnModel;
 import com.example.demo.service.CountService;
+import com.example.demo.service.DBService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class CountController {
 
     final CountService countService;
-    final JPAController jpaController;
+    final DBService dbService;
 
     @Autowired
-    public CountController(CountService countService, JPAController jpaController) {
+    public CountController(CountService countService, DBService dbService) {
         this.countService = countService;
-        this.jpaController = jpaController;
+        this.dbService = dbService;
     }
 
     @RequestMapping({"/doCount"})
@@ -34,7 +36,7 @@ public class CountController {
             result.add(countService.doCount(serviceModel));
         }
 
-        jpaController.addRecord(new CountRecordModel(result.getOneThousand(), result.getFiveHundred(), result.getOneHundred()));
+        dbService.addRecord(new CountRecordModel(result.getOneThousand(), result.getFiveHundred(), result.getOneHundred()));
         return result.toString();
 
     }
