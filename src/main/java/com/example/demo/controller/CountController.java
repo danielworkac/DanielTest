@@ -34,7 +34,7 @@ public class CountController {
             result.add(countService.doCount(serviceModel));
         }
 
-        jpaController.addRecord(new CountRecordModel(result.getOneThousand(), result.getFiveHundred(), result.getOneThousand()));
+        jpaController.addRecord(new CountRecordModel(result.getOneThousand(), result.getFiveHundred(), result.getOneHundred()));
         return result.toString();
 
     }

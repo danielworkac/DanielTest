@@ -5,20 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "CountRecord")
+@Table(name = "countrecord")
 @Getter
 @Setter
 public class CountRecordModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
+    @Column(name = "ID")
     private Integer id;
-    @Column(name = "thousand")
+    @Column(name = "THOUSAND")
     private Integer thousand;
-    @Column(name = "fiveHundred")
+    @Column(name = "FIVEHUNDRED")
     private Integer fiveHundred;
-    @Column(name = "hundred")
+    @Column(name = "HUNDRED")
     private Integer hundred;
 
     public CountRecordModel() {
