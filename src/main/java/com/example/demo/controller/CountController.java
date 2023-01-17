@@ -5,10 +5,8 @@ import com.example.demo.model.CountRecordModel;
 import com.example.demo.model.ServiceModel;
 import com.example.demo.model.ServiceReturnModel;
 import com.example.demo.service.CountService;
-import com.example.demo.service.DBService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,25 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class CountController {
 
     final CountService countService;
-    final DBService dbService;
+    final DBController dbController;
 
     @Autowired
-    public CountController(CountService countService, DBService dbService) {
+    public CountController(CountService countService, DBController dbController) {
         this.countService = countService;
-        this.dbService = dbService;
+        this.dbController = dbController;
     }
 
     @RequestMapping({"/doCount"})
     public String doCount(@RequestBody JSONObject obj) {
         ServiceReturnModel result = new ServiceReturnModel();
+        String account = obj.getString("account");
+        obj.fluentRemove("account");
 
         for (int i = 0; i < obj.size(); i++) {
             String[] strRedEnvelope = obj.getString(Integer.toString(i)).split("/");
             ServiceModel serviceModel = new ServiceModel(Integer.parseInt(strRedEnvelope[0]), Integer.parseInt(strRedEnvelope[1]));
             result.add(countService.doCount(serviceModel));
         }
-
-        dbService.addRecord(new CountRecordModel(result.getOneThousand(), result.getFiveHundred(), result.getOneHundred()));
+        CountRecordModel countRecordModel = new CountRecordModel(result.getOneThousand(), result.getFiveHundred(), result.getOneHundred(), account);
+        dbController.doInsert(countRecordModel);
         return result.toString();
 
     }

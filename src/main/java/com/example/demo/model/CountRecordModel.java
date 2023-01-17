@@ -20,24 +20,24 @@ public class CountRecordModel {
     private Integer fiveHundred;
     @Column(name = "HUNDRED")
     private Integer hundred;
+    @Column(name = "ACCOUNT")
+    private String account;
+    public CountRecordModel() {}
 
-    public CountRecordModel() {
-
-    }
-
-    public CountRecordModel(int thousand, int fiveHundred, int hundred) {
+    public CountRecordModel(int thousand, int fiveHundred, int hundred, String account) {
         this.thousand = thousand;
         this.fiveHundred = fiveHundred;
         this.hundred = hundred;
+        this.account = account;
     }
 
     @Override
     public String toString() {
         return "CountRecordModel{" +
-                "id=" + id +
-                "thousand=" + thousand +
+                "account=" + account +
+                ", thousand=" + thousand +
                 ", fiveHundred=" + fiveHundred +
-                ", Hundred=" + hundred +
+                ", hundred=" + hundred +
                 '}';
     }
 }
